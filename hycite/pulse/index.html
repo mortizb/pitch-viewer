@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Penny Agent — Weekly Pulse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --hc-black: #141E28;
+      --hc-black-light: #1E2A36;
+      --hc-tangerine: #EA723D;
+      --hc-tangerine-dark: #D4602F;
+      --hc-khaki: #CBC4B0;
+      --hc-khaki-light: #E8E4D9;
+      --hc-khaki-bg: #F5F3EE;
+      --white: #ffffff;
+      --cream: #F5F3EE;
+      --text: #141E28;
+      --text-muted: #5A5A5A;
+      --border: #CBC4B0;
+      --success: #2d8a56;
+      --section-pad: 72px 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      background: var(--white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    /* Header */
+    header {
+      padding: 14px 0;
+      position: sticky;
+      top: 0;
+      background: var(--hc-black);
+      z-index: 100;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .header-logo { height: 22px; }
+    .header-sep { color: rgba(255,255,255,0.2); }
+    .header-label {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.03em;
+    }
+    .header-week {
+      margin-left: auto;
+      font-size: 0.75rem;
+      color: var(--hc-tangerine);
+      background: rgba(234,114,61,0.12);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, var(--hc-black) 0%, var(--hc-black-light) 100%);
+      color: var(--white);
+      padding: 80px 0 72px;
+    }
+    .hero-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--hc-tangerine);
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-family: 'Inter', -apple-system, sans-serif; letter-spacing: -0.01em;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--hc-tangerine);
+    }
+    .hero .hero-sub {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.75);
+      max-width: 540px;
+      margin-top: 16px;
+      line-height: 1.7;
+    }
+    .hero-meta {
+      margin-top: 32px;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.45);
+    }
+
+    /* Sections */
+    section { padding: var(--section-pad); }
+    section.cream { background: var(--cream); }
+    section.dark {
+      background: linear-gradient(135deg, var(--hc-black) 0%, var(--hc-black-light) 100%);
+      color: var(--white);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .section-num {
+      font-family: 'Inter', -apple-system, sans-serif; letter-spacing: -0.01em;
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--border);
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    section.dark .section-num { color: rgba(255,255,255,0.15); }
+    .section-header h2 {
+      font-family: 'Inter', -apple-system, sans-serif; letter-spacing: -0.01em;
+      font-size: 1.75rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .section-header p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    section.dark .section-header p { color: rgba(255,255,255,0.6); }
+
+    /* Emoji Scale */
+    .emoji-scale {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    .emoji-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 16px 20px;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+      background: var(--white);
+      transition: all 0.2s;
+      min-width: 90px;
+    }
+    .emoji-option:hover {
+      border-color: var(--hc-tangerine);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .emoji-option.selected {
+      border-color: var(--hc-tangerine);
+      background: rgba(234,114,61,0.08);
+      box-shadow: 0 2px 8px rgba(234,114,61,0.2);
+    }
+    .emoji-option .emoji { font-size: 2rem; }
+    .emoji-option .label { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; }
+    .emoji-option input { display: none; }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .card:hover {
+      border-color: var(--hc-tangerine);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .card.selected {
+      border-color: var(--hc-tangerine);
+      background: rgba(234,114,61,0.06);
+    }
+    .card .card-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--hc-tangerine);
+      margin-bottom: 6px;
+    }
+    .card .card-title { font-weight: 600; font-size: 0.95rem; }
+    .card .card-desc { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+    .card input { display: none; }
+
+    /* Friction chips */
+    .chip-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      border: 2px solid var(--border);
+      border-radius: 24px;
+      background: var(--white);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .chip:hover { border-color: var(--hc-tangerine); }
+    .chip.selected {
+      border-color: var(--hc-black);
+      background: var(--hc-black);
+      color: var(--white);
+    }
+    .chip input { display: none; }
+
+    /* Text inputs */
+    textarea, input[type="text"] {
+      width: 100%;
+      padding: 16px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      resize: vertical;
+      transition: border-color 0.2s;
+      background: var(--white);
+    }
+    textarea:focus, input[type="text"]:focus {
+      outline: none;
+      border-color: var(--hc-tangerine);
+    }
+    textarea::placeholder { color: #b0b0c0; }
+
+    /* NPS Scale */
+    .nps-scale {
+      display: flex;
+      gap: 0;
+      margin: 20px 0;
+      justify-content: center;
+    }
+    .nps-btn {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--border);
+      background: var(--white);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: var(--text);
+    }
+    .nps-btn:first-child { border-radius: 12px 0 0 12px; }
+    .nps-btn:last-child { border-radius: 0 12px 12px 0; }
+    .nps-btn:not(:first-child) { border-left: none; }
+    .nps-btn:hover { background: var(--cream); }
+    .nps-btn.selected {
+      background: var(--hc-black);
+      border-color: var(--hc-black);
+      color: var(--white);
+    }
+    .nps-btn.selected ~ .nps-btn { border-left-color: var(--border); }
+    .nps-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      max-width: 528px;
+      margin: 8px auto 0;
+    }
+    .nps-btn input { display: none; }
+
+    /* Rank list */
+    .rank-list { list-style: none; }
+    .rank-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 20px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: var(--white);
+      margin-bottom: 10px;
+      cursor: grab;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .rank-item:active { cursor: grabbing; }
+    .rank-item.dragging {
+      opacity: 0.5;
+      border-color: var(--hc-tangerine);
+    }
+    .rank-item.drag-over {
+      border-color: var(--hc-tangerine);
+      background: rgba(234,114,61,0.05);
+    }
+    .rank-num {
+      font-family: 'Inter', -apple-system, sans-serif; letter-spacing: -0.01em;
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      min-width: 24px;
+    }
+    .rank-grip { color: var(--border); font-size: 1.2rem; }
+    .rank-content { flex: 1; }
+    .rank-title { font-weight: 600; font-size: 0.95rem; }
+    .rank-desc { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+    .rank-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: var(--hc-black);
+      color: var(--white);
+    }
+
+    /* Submit */
+    .submit-section {
+      text-align: center;
+      padding: 60px 0 80px;
+    }
+    .submit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 48px;
+      background: var(--hc-black);
+      color: var(--white);
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .submit-btn:hover { background: var(--hc-black-light); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(20,30,40,0.3); }
+    .submit-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+    }
+
+    /* Success */
+    .success-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(20,30,40,0.95);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: var(--white);
+      text-align: center;
+      padding: 24px;
+    }
+    .success-overlay.show { display: flex; }
+    .success-check { font-size: 4rem; margin-bottom: 24px; }
+    .success-overlay h2 {
+      font-family: 'Inter', -apple-system, sans-serif; letter-spacing: -0.01em;
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+    .success-overlay p { color: rgba(255,255,255,0.6); max-width: 400px; }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .emoji-scale { gap: 8px; }
+      .emoji-option { min-width: 60px; padding: 12px; }
+      .emoji-option .emoji { font-size: 1.5rem; }
+      .nps-btn { width: 36px; height: 40px; font-size: 0.85rem; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .section-num { font-size: 2rem; }
+      .section-header h2 { font-size: 1.3rem; }
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <img class="header-logo" src="../../logos/logo-hy-cite-tangerine.svg" alt="Hy Cite">
+    <span class="header-sep">&times;</span>
+    <span class="header-label">Penny Agent Pulse</span>
+    <span class="header-week">This Week</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <div class="hero-label">Weekly Agent Pulse</div>
+    <h1>How is <em>Penny</em> working<br>for you?</h1>
+    <p class="hero-sub">
+      Your honest feedback shapes how we improve the AI assistant.
+      This takes about 2 minutes. All responses are anonymous.
+    </p>
+    <p class="hero-meta">Agentforce POC &middot; Phase 1A &middot; Assistive AI in Service Console</p>
+  </div>
+</div>
+
+<form id="pulseForm" method="POST" action="https://mo-pitch-engine-66261a2124ae.herokuapp.com/api/pulse/hycite">
+<input type="hidden" name="week" value="This Week">
+
+<!-- 01: Overall Sentiment -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <div>
+        <h2>Overall, how is Penny helping?</h2>
+        <p>Think about your experience this week across all your collections cases.</p>
+      </div>
+    </div>
+    <div class="emoji-scale">
+      <label class="emoji-option" onclick="selectEmoji(this)">
+        <input type="radio" name="sentiment" value="1">
+        <span class="emoji">&#128553;</span>
+        <span class="label">Slows me down</span>
+      </label>
+      <label class="emoji-option" onclick="selectEmoji(this)">
+        <input type="radio" name="sentiment" value="2">
+        <span class="emoji">&#128533;</span>
+        <span class="label">Not helpful yet</span>
+      </label>
+      <label class="emoji-option" onclick="selectEmoji(this)">
+        <input type="radio" name="sentiment" value="3">
+        <span class="emoji">&#128528;</span>
+        <span class="label">It's okay</span>
+      </label>
+      <label class="emoji-option" onclick="selectEmoji(this)">
+        <input type="radio" name="sentiment" value="4">
+        <span class="emoji">&#128578;</span>
+        <span class="label">Pretty useful</span>
+      </label>
+      <label class="emoji-option" onclick="selectEmoji(this)">
+        <input type="radio" name="sentiment" value="5">
+        <span class="emoji">&#129321;</span>
+        <span class="label">Game changer</span>
+      </label>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- 02: Feature Value Ranking -->
+<section class="cream">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <div>
+        <h2>What's saving you the most time?</h2>
+        <p>Drag to rank by impact &mdash; most helpful feature at the top.</p>
+      </div>
+    </div>
+    <ul class="rank-list" id="rankList">
+      <li class="rank-item" draggable="true" data-feature="service_replies">
+        <span class="rank-num">1</span>
+        <span class="rank-grip">&#x2630;</span>
+        <div class="rank-content">
+          <div class="rank-title">Service Replies</div>
+          <div class="rank-desc">AI-drafted responses for collections conversations</div>
+        </div>
+        <span class="rank-badge" style="display:none">TOP</span>
+      </li>
+      <li class="rank-item" draggable="true" data-feature="case_summarization">
+        <span class="rank-num">2</span>
+        <span class="rank-grip">&#x2630;</span>
+        <div class="rank-content">
+          <div class="rank-title">Case Summarization</div>
+          <div class="rank-desc">Auto wrap-up notes and consistent case codes</div>
+        </div>
+      </li>
+      <li class="rank-item" draggable="true" data-feature="knowledge_answers">
+        <span class="rank-num">3</span>
+        <span class="rank-grip">&#x2630;</span>
+        <div class="rank-content">
+          <div class="rank-title">Knowledge Answers</div>
+          <div class="rank-desc">SOPs, hardship language, and FAQs surfaced mid-case</div>
+        </div>
+      </li>
+      <li class="rank-item" draggable="true" data-feature="service_assistant">
+        <span class="rank-num">4</span>
+        <span class="rank-grip">&#x2630;</span>
+        <div class="rank-content">
+          <div class="rank-title">Service Assistant</div>
+          <div class="rank-desc">AI co-pilot embedded in your console</div>
+        </div>
+      </li>
+      <li class="rank-item" draggable="true" data-feature="bilingual_support">
+        <span class="rank-num">5</span>
+        <span class="rank-grip">&#x2630;</span>
+        <div class="rank-content">
+          <div class="rank-title">Bilingual Support</div>
+          <div class="rank-desc">English &amp; Spanish assistance for LATAM cases</div>
+        </div>
+      </li>
+    </ul>
+    <input type="hidden" name="feature_rank" id="featureRankInput">
+  </div>
+</section>
+
+<!-- 03: Quality & Accuracy -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <div>
+        <h2>How accurate are Penny's suggestions?</h2>
+        <p>When Penny drafts a reply or surfaces information, how often do you use it?</p>
+      </div>
+    </div>
+    <div class="cards-grid">
+      <label class="card" onclick="selectCard(this, 'accuracy')">
+        <input type="radio" name="accuracy" value="almost_always">
+        <div class="card-label">Acceptance Rate</div>
+        <div class="card-title">Almost always use them as-is</div>
+        <div class="card-desc">Minimal edits needed — the suggestions are spot-on</div>
+      </label>
+      <label class="card" onclick="selectCard(this, 'accuracy')">
+        <input type="radio" name="accuracy" value="usually_edit">
+        <div class="card-label">Acceptance Rate</div>
+        <div class="card-title">Use them with light edits</div>
+        <div class="card-desc">Good starting point but I adjust tone or details</div>
+      </label>
+      <label class="card" onclick="selectCard(this, 'accuracy')">
+        <input type="radio" name="accuracy" value="heavy_edit">
+        <div class="card-label">Acceptance Rate</div>
+        <div class="card-title">Heavy editing required</div>
+        <div class="card-desc">The intent is right but the output needs significant rework</div>
+      </label>
+      <label class="card" onclick="selectCard(this, 'accuracy')">
+        <input type="radio" name="accuracy" value="rarely_use">
+        <div class="card-label">Acceptance Rate</div>
+        <div class="card-title">Rarely use them</div>
+        <div class="card-desc">I mostly write my own responses from scratch</div>
+      </label>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- 04: Friction & Blockers -->
+<section class="cream">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <div>
+        <h2>Where does Penny fall short?</h2>
+        <p>Select all that apply — what's getting in the way?</p>
+      </div>
+    </div>
+    <div class="chip-grid">
+      <label class="chip" onclick="toggleChip(this)">
+        <input type="checkbox" name="friction" value="slow_response">
+        Suggestions take too long
+      </label>
+      <label class="chip" onclick="toggleChip(this)">
+        <input type="checkbox" name="friction" value="wrong_context">
+        Wrong account context
+      </label>
+      <label class="chip" onclick="toggleChip(this)">
+        <input type="checkbox" name="friction" value="bad_tone">
+        Tone doesn't match our style
+      </label>
+      <label class="chip" onclick="toggleChip(this)">
+        <input type="checkbox" name="friction" value="missing_sops">
+        Missing SOPs or policies
+      </label>
+      <label class="chip" onclick="toggleChip(this)">
+        <input type="checkbox" name="friction" value="wrong_language">
+        Wrong language (EN/ES)
+      </label>
+      <label class="chip" onclick="toggleChip(this)">
+        <input type="checkbox" name="friction" value="compliance_gaps">
+        Compliance info incomplete
+      </label>
+      <label class="chip" onclick="toggleChip(this)">
+        <input type="checkbox" name="friction" value="hard_to_find">
+        Hard to find in console
+      </label>
+      <label class="chip" onclick="toggleChip(this)">
+        <input type="checkbox" name="friction" value="no_issues">
+        No issues this week
+      </label>
+    </div>
+    <div style="margin-top: 24px;">
+      <textarea name="friction_detail" rows="3" placeholder="Anything specific? e.g. &quot;Penny suggested a payment plan we don't offer for 0-30 day accounts&quot;"></textarea>
+    </div>
+  </div>
+</section>
+
+<!-- 05: AHT Impact -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <div>
+        <h2>Is Penny saving you time?</h2>
+        <p>Compared to before the POC, how has your handle time changed on digital channels?</p>
+      </div>
+    </div>
+    <div class="cards-grid">
+      <label class="card" onclick="selectCard(this, 'aht_impact')">
+        <input type="radio" name="aht_impact" value="much_faster">
+        <div class="card-label">Handle Time</div>
+        <div class="card-title">Much faster</div>
+        <div class="card-desc">Cases resolve noticeably quicker with Penny's help</div>
+      </label>
+      <label class="card" onclick="selectCard(this, 'aht_impact')">
+        <input type="radio" name="aht_impact" value="somewhat_faster">
+        <div class="card-label">Handle Time</div>
+        <div class="card-title">Somewhat faster</div>
+        <div class="card-desc">Small improvements — saves a few steps per case</div>
+      </label>
+      <label class="card" onclick="selectCard(this, 'aht_impact')">
+        <input type="radio" name="aht_impact" value="about_same">
+        <div class="card-label">Handle Time</div>
+        <div class="card-title">About the same</div>
+        <div class="card-desc">No real change yet in how long cases take</div>
+      </label>
+      <label class="card" onclick="selectCard(this, 'aht_impact')">
+        <input type="radio" name="aht_impact" value="slower">
+        <div class="card-label">Handle Time</div>
+        <div class="card-title">Actually slower</div>
+        <div class="card-desc">Reviewing suggestions adds time I didn't need to spend</div>
+      </label>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- 06: What would make it indispensable? -->
+<section class="cream">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <div>
+        <h2>What would make Penny indispensable?</h2>
+        <p>If you could change one thing or add one capability, what would it be?</p>
+      </div>
+    </div>
+    <textarea name="wishlist" rows="4" placeholder="e.g. &quot;Auto-generate the PTP note so I just have to review and send&quot;"></textarea>
+  </div>
+</section>
+
+<!-- 07: NPS -->
+<section class="dark">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num" style="color: rgba(255,255,255,0.12)">07</span>
+      <div>
+        <h2>Would you recommend Penny to a colleague?</h2>
+        <p style="color: rgba(255,255,255,0.55)">On a scale of 0-10, how likely are you to recommend this AI assistant?</p>
+      </div>
+    </div>
+    <div class="nps-scale">
+      
+        <label class="nps-btn" onclick="selectNps(this, 0)">
+          <input type="radio" name="nps" value="0">
+          0
+        </label>
+      
+        <label class="nps-btn" onclick="selectNps(this, 1)">
+          <input type="radio" name="nps" value="1">
+          1
+        </label>
+      
+        <label class="nps-btn" onclick="selectNps(this, 2)">
+          <input type="radio" name="nps" value="2">
+          2
+        </label>
+      
+        <label class="nps-btn" onclick="selectNps(this, 3)">
+          <input type="radio" name="nps" value="3">
+          3
+        </label>
+      
+        <label class="nps-btn" onclick="selectNps(this, 4)">
+          <input type="radio" name="nps" value="4">
+          4
+        </label>
+      
+        <label class="nps-btn" onclick="selectNps(this, 5)">
+          <input type="radio" name="nps" value="5">
+          5
+        </label>
+      
+        <label class="nps-btn" onclick="selectNps(this, 6)">
+          <input type="radio" name="nps" value="6">
+          6
+        </label>
+      
+        <label class="nps-btn" onclick="selectNps(this, 7)">
+          <input type="radio" name="nps" value="7">
+          7
+        </label>
+      
+        <label class="nps-btn" onclick="selectNps(this, 8)">
+          <input type="radio" name="nps" value="8">
+          8
+        </label>
+      
+        <label class="nps-btn" onclick="selectNps(this, 9)">
+          <input type="radio" name="nps" value="9">
+          9
+        </label>
+      
+        <label class="nps-btn" onclick="selectNps(this, 10)">
+          <input type="radio" name="nps" value="10">
+          10
+        </label>
+      
+    </div>
+    <div class="nps-labels">
+      <span>Not at all likely</span>
+      <span>Extremely likely</span>
+    </div>
+  </div>
+</section>
+
+<!-- Submit -->
+<div class="submit-section">
+  <div class="container">
+    <button type="submit" class="submit-btn">Submit Pulse &rarr;</button>
+    <p class="submit-note">Anonymous &middot; Takes ~2 minutes &middot; Helps shape the future of Penny</p>
+  </div>
+</div>
+
+</form>
+
+<!-- Success overlay -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-check">&#10003;</div>
+  <h2>Thanks for your feedback</h2>
+  <p>Your anonymous response has been recorded. See you next week!</p>
+</div>
+
+<script>
+function selectEmoji(el) {
+  el.closest('.emoji-scale').querySelectorAll('.emoji-option').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  el.querySelector('input').checked = true;
+}
+
+function selectCard(el, groupName) {
+  el.closest('.cards-grid').querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  el.querySelector('input').checked = true;
+}
+
+function toggleChip(el) {
+  el.classList.toggle('selected');
+  const inp = el.querySelector('input');
+  inp.checked = !inp.checked;
+}
+
+function selectNps(el, val) {
+  el.closest('.nps-scale').querySelectorAll('.nps-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  el.querySelector('input').checked = true;
+}
+
+// Drag-to-rank
+const rankList = document.getElementById('rankList');
+let dragItem = null;
+
+rankList.addEventListener('dragstart', e => {
+  dragItem = e.target.closest('.rank-item');
+  if (dragItem) dragItem.classList.add('dragging');
+});
+
+rankList.addEventListener('dragend', e => {
+  if (dragItem) dragItem.classList.remove('dragging');
+  rankList.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
+  updateRankNumbers();
+  dragItem = null;
+});
+
+rankList.addEventListener('dragover', e => {
+  e.preventDefault();
+  const target = e.target.closest('.rank-item');
+  if (target && target !== dragItem) {
+    rankList.querySelectorAll('.rank-item').forEach(i => i.classList.remove('drag-over'));
+    target.classList.add('drag-over');
+    const rect = target.getBoundingClientRect();
+    const mid = rect.top + rect.height / 2;
+    if (e.clientY < mid) {
+      rankList.insertBefore(dragItem, target);
+    } else {
+      rankList.insertBefore(dragItem, target.nextSibling);
+    }
+  }
+});
+
+function updateRankNumbers() {
+  rankList.querySelectorAll('.rank-item').forEach((item, i) => {
+    item.querySelector('.rank-num').textContent = i + 1;
+    const badge = item.querySelector('.rank-badge');
+    badge.style.display = i === 0 ? 'inline-block' : 'none';
+  });
+}
+
+// Form submission
+document.getElementById('pulseForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  // Collect rank order
+  const ranks = Array.from(rankList.querySelectorAll('.rank-item')).map(i => i.dataset.feature);
+  document.getElementById('featureRankInput').value = ranks.join(',');
+
+  const formData = new FormData(this);
+  const payload = {};
+  formData.forEach((v, k) => {
+    if (k === 'friction') (payload.friction = payload.friction || []).push(v);
+    else payload[k] = v;
+  });
+  payload.feature_rank = ranks;
+  fetch('https://mo-pitch-engine-66261a2124ae.herokuapp.com/api/pulse/hycite', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  }).then(res => {
+    if (res.ok) {
+      document.getElementById('successOverlay').classList.add('show');
+    } else {
+      alert('Something went wrong. Please try again.');
+    }
+  }).catch(() => {
+    alert('Something went wrong. Please try again.');
+  });
+});
+
+// Initialize rank badges
+updateRankNumbers();
+
+// Touch support for drag-rank on mobile
+let touchItem = null;
+let touchClone = null;
+
+rankList.addEventListener('touchstart', e => {
+  const item = e.target.closest('.rank-item');
+  if (!item) return;
+  touchItem = item;
+  const rect = item.getBoundingClientRect();
+  touchClone = item.cloneNode(true);
+  touchClone.style.position = 'fixed';
+  touchClone.style.width = rect.width + 'px';
+  touchClone.style.opacity = '0.8';
+  touchClone.style.zIndex = '1000';
+  touchClone.style.pointerEvents = 'none';
+  document.body.appendChild(touchClone);
+  item.style.opacity = '0.3';
+}, { passive: true });
+
+rankList.addEventListener('touchmove', e => {
+  if (!touchItem || !touchClone) return;
+  e.preventDefault();
+  const touch = e.touches[0];
+  touchClone.style.left = '24px';
+  touchClone.style.top = (touch.clientY - 30) + 'px';
+  const target = document.elementFromPoint(touch.clientX, touch.clientY);
+  const targetItem = target && target.closest('.rank-item');
+  if (targetItem && targetItem !== touchItem) {
+    const rect = targetItem.getBoundingClientRect();
+    const mid = rect.top + rect.height / 2;
+    if (touch.clientY < mid) {
+      rankList.insertBefore(touchItem, targetItem);
+    } else {
+      rankList.insertBefore(touchItem, targetItem.nextSibling);
+    }
+  }
+}, { passive: false });
+
+rankList.addEventListener('touchend', () => {
+  if (touchClone) { touchClone.remove(); touchClone = null; }
+  if (touchItem) { touchItem.style.opacity = '1'; touchItem = null; }
+  updateRankNumbers();
+});
+</script>
+
+</body>
+</html>
